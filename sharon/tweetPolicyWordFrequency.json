@@ -1,0 +1,734 @@
+/* global use, db */
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+// The result of the last command run in a playground is shown on the results panel.
+// By default the first 20 documents will be returned with a cursor.
+// Use 'console.log()' to print to the debug output.
+// For more documentation on playgrounds please refer to
+// https://www.mongodb.com/docs/mongodb-vscode/playgrounds/
+
+// drop existing tables before a live demo
+
+// Select the database to use and get collections
+use('test');
+db.getCollection('database');
+
+// const candidates = ['Trump', 'Biden']
+var policyWords = ['covid', 'mask', 'vaccine', 'climate', 'tax', 'Obamacare', 'China', 'tariff', 'racism']
+
+db.database.aggregate([
+  {
+    $project: {
+      words: { $split: ["$tweet", " "] }
+    }
+  },
+  { $unwind: "$words" },
+  {
+    $match: {
+      words: { $in: policyWords }
+    }
+  },
+  {
+    $group: {
+      _id: { word: "$words" },
+      frequency: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      word: "$_id.word",
+      frequency: 1
+    }
+  },
+  { $sort: { frequency: -1 } },
+  // store the output of an aggregation query to a new collection
+  { $out: "tweetPolicyFrequency" }
+])
+
+db.tweetPolicyFrequency.find()
+
+// Example of sample SQL to create collections for each policy and each candidate respectively
+/* 
+WITH covid AS (
+  SELECT tweet_id, "covid" AS policy
+  FROM (
+      SELECT tweet_id, SPLIT_STRING(tweet, ' ') AS policyWord
+      FROM database
+      WHERE  policyWord LIKE '%covid%'
+          OR policyWord LIKE '%corona%'
+          OR policyWord LIKE '%virus%'
+  )
+)
+*/
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+    $match: {
+      $or: [
+        { policyWords: /covid/i },
+        { policyWords: /corona/i },
+        { policyWords: /virus/i }
+      ]
+    }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "covid" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "covid" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /mask/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "mask" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "mask" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /vaccine/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "vaccine" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "vaccine" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /climate/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "climate" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "climate" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /tax/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "tax" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "tax" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /Obamacare/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "Obamacare" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "Obamacare" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /China/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "China" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "China" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /tariff/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "tariff" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "tariff" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /racism/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "racism" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "racism" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /Trump/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "Trump" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "Trump" }
+]);
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /Biden/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "Biden" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    {$out: "Biden" }
+]);
+
+// Manually implemented Chi-Square test to find the correlation between a candidate and "mask" policy 
+const num_tweet_Trump = db.Trump.countDocuments();
+print("Number of tweets mentioning Trump: " + num_tweet_Trump);
+const num_tweet_Biden = db.Biden.countDocuments();
+print("Number of tweets mentioning Biden: " + num_tweet_Biden);
+const num_tweet_Trump_and_Biden = num_tweet_Trump + num_tweet_Biden
+print("Number of tweets mentioning Trump and Biden: " + num_tweet_Trump_and_Biden);
+
+db.database.aggregate([
+  {
+      $match: {
+          tweet: {
+              $regex: 'TRUMP',
+              $options: 'i' 
+          }
+      }
+  },
+  {
+      $match: {
+          tweet: {
+              $regex: 'mask',
+              $options: 'i'
+          }
+      }
+  },
+  {
+      $project: {
+          tweet_id: 1,
+          policyWord: { $split: ["$tweet", " "] }
+      }
+  },
+  {$sort: { tweet_id: 1 } },
+  {$out: "Trump_and_mask" }
+]);
+
+// Compute how many tweets mentioning "Trump" and also mentionining "mask" 
+const num_tweet_Trump_AND_mask = db.Trump_and_mask.countDocuments();
+print("Number of tweets mentioning Trump and mask policy: " + num_tweet_Trump_AND_mask);
+// Compute how many tweets mentioning "Trump" but not mentionining "mask" 
+const num_tweet_Trump_NOT_mask = db.Trump.countDocuments() - db.Trump_and_mask.countDocuments();
+print("Number of tweets mentioning Trump but not mentionning mask policy: " + num_tweet_Trump_NOT_mask);
+
+db.database.aggregate([
+  {
+      $match: {
+          tweet: {
+              $regex: 'Biden',
+              $options: 'i' 
+          }
+      }
+  },
+  {
+      $match: {
+          tweet: {
+              $regex: 'mask',
+              $options: 'i'
+          }
+      }
+  },
+  {
+      $project: {
+          tweet_id: 1,
+          policyWord: { $split: ["$tweet", " "] }
+      }
+  },
+  {$sort: { tweet_id: 1 } },
+  {$out: "Biden_and_mask" }
+]);
+
+// Compute how many tweets mentioning "Biden" and also mentionining "mask" 
+const num_tweet_Biden_AND_mask = db.Biden_and_mask.countDocuments();
+print("Number of tweets mentioning Biden and mask policy: " + num_tweet_Biden_AND_mask);
+// Compute how many tweets mentioning "Biden" but not mentionining "mask" 
+const num_tweet_Biden_NOT_mask = db.Biden.countDocuments() - db.Biden_and_mask.countDocuments();
+print("Number of tweets mentioning Biden but not mentionning mask policy: " + num_tweet_Biden_NOT_mask);
+
+
+
+
+
+
+
+
+
+
+
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+    $match: {
+      $and: [
+        { policyWords: /Biden/i },
+        { policyWords: /mask/i }
+      ]
+    }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "covid" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "Biden_and_mask" }
+]);
+
+db.database.aggregate([
+  {
+      $match: {
+          tweet: {
+              $regex: 'TRUMP',
+              $options: 'i' 
+          }
+      }
+  },
+  {
+      $match: {
+          tweet: {
+              $regex: 'mask',
+              $options: 'i'
+          }
+      }
+  },
+  {
+      $project: {
+          tweet_id: 1,
+          policyWord: { $split: ["$tweet", " "] }
+      }
+  },
+  {$sort: { tweet_id: 1 } },
+  {$out: "Trump_and_mask" }
+]);
+
+
+// Compute how many tweets mentioned "Trump" and also mentioned "Mask" using a JOIN query
+const num_tweet_Trump_and_mask = db.Trump_and_mask.countDocuments();
+print("Number of tweets mentioning Trump and mask policy: " + num_tweet_Trump_and_mask);
+
+db.database.aggregate([
+  {
+      $project: {
+          tweet_id: 1,
+          policyWord: { $split: ["$tweet", " "] }
+      }
+  },
+  {
+      $match: {
+          $or: [
+              { policyWord: { $regex: /trump/, $options: 'i' } },
+              { policyWord: { $regex: /mask/, $options: 'i' } }
+          ]
+      }
+  },
+  {
+      $project: {
+          tweet_id: 1,
+          policy: "covid"
+      }
+  },
+  {$sort: { tweet_id: 1 } },
+  {$out: "Trump_and_mask" }
+]);
+
+
+
+db.database.aggregate([
+  {
+    $project: {
+      tweet_id: 1,
+      policyWords: {
+        $split: ["$tweet", " "]
+      }
+    }
+  },
+  { $unwind: "$policyWords" },
+  {
+      $match: {
+        policyWords: /Trump/i
+      }
+  },
+  {
+    $group: {
+      _id: "$tweet_id",
+      policy: { $first: "Trump" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      tweet_id: "$_id",
+      policy: 1
+    }
+  },
+    {$sort: { tweet_id: 1 } },
+    { $out: "Trump" }
+]);
+
+
+
+
+db.Trump.aggregate([
+  {
+      $lookup: {
+          from: "mask", 
+          localField: "tweet_id", 
+          foreignField: "tweet_id", 
+          as: "mask_data" 
+      }
+  },
+  {
+      $match: {
+          "mask_data": { $ne: [] } 
+      }
+  },
+  {
+      $count: "total_matching_tweets" 
+  }
+]);
+
+
+// Union Trump collections and Biden collections 
+db.Trump.aggregate([
+  {
+      $unionWith: "Biden" 
+  {
+      $out: "Trump_And_Biden" 
+]);
+
+db.Trmp_And_Biden.
+
+db.Trmp_And_Biden.find()
+
+db.TRUMP.aggregate([
+  {
+      $unionWith: {
+          coll: "BIDEN"
+      },
+      {$sort: { tweet_id: 1 } },
+      {$out: "TrumpAndBiden" }
+  }
+]);
+
+
+db.vaccine.find();
+
+db.vaccine.find();
+
+
+// and count count the frequency of the policy keywords
+/*
+WITH WordCounts AS (
+    SELECT word, COUNT(*) as frequency
+    FROM (
+        SELECT SPLIT_STRING(tweet, ' ') AS word
+        FROM database.tweet
+    ) AS SplitWords
+    GROUP BY word
+);
+SELECT word, frequency
+FROM WordCounts
+ORDER BY frequency DESC;
+*/
+const policyWords = ["the", "to", "", "a", "and", "is", "of", "in", "for", "at", "you", "I", "that", "on", "which", "an", "be", "de"]; 
+db.database.aggregate([
+    {
+      $project: {
+        words: { $split: ["$tweet", " "] }
+      }
+    },
+    { $unwind: "$words" },
+    {
+      $match: {
+        words: { $in: policyWords }
+      }
+    },
+    {
+      $group: {
+        _id: { word: "$words" },
+        frequency: { $sum: 1 }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        word: "$_id.word",
+        frequency: 1
+      }
+    },
+    { $sort: { frequency: -1 } },
+    // store the output of an aggregation query to a new collection
+    { $out: "tweetPolicyFrequency" }
+  ])
+
+db.tweePolicyFrequency.find()
+
+
