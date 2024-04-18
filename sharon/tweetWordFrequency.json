@@ -1,0 +1,142 @@
+[
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e95"
+    },
+    "frequency": 660505,
+    "word": "#Trump"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e96"
+    },
+    "frequency": 463374,
+    "word": "#Biden"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e97"
+    },
+    "frequency": 255888,
+    "word": "#JoeBiden"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e98"
+    },
+    "frequency": 150962,
+    "word": "#trump"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e99"
+    },
+    "frequency": 136493,
+    "word": "Trump"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e9a"
+    },
+    "frequency": 133456,
+    "word": "will"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e9b"
+    },
+    "frequency": 131631,
+    "word": "are"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e9c"
+    },
+    "frequency": 125070,
+    "word": "#DonaldTrump"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e9d"
+    },
+    "frequency": 124562,
+    "word": "&amp;"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e9e"
+    },
+    "frequency": 121343,
+    "word": "#Election2020"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073e9f"
+    },
+    "frequency": 121088,
+    "word": "he"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea0"
+    },
+    "frequency": 115551,
+    "word": "@realDonaldTrump"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea1"
+    },
+    "frequency": 115202,
+    "word": "this"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea2"
+    },
+    "frequency": 113548,
+    "word": "his"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea3"
+    },
+    "frequency": 112165,
+    "word": "la"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea4"
+    },
+    "frequency": 111941,
+    "word": "with"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea5"
+    },
+    "frequency": 104787,
+    "word": "Biden"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea6"
+    },
+    "frequency": 100159,
+    "word": "it"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea7"
+    },
+    "frequency": 99954,
+    "word": "not"
+  },
+  {
+    "_id": {
+      "$oid": "6621a111d11556dc9b073ea8"
+    },
+    "frequency": 98477,
+    "word": "have"
+  }
+]
