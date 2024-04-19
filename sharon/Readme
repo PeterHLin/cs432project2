@@ -1,0 +1,15 @@
+Here are the steps I did:
+
+1. Policy Keyword Collection:
+   - Collected a list of keywords for policies relevant to the two presidential candidates for the 2020 election according to the BCC NEWS titled "US election 2020: What are Trump's and Biden's policies?" at https://www.bbc.co.uk/news/election-us-2020-54507550.
+
+2. Popularity Analysis:
+   - Computed the number of tweets mentioning policy keywords.
+   - Generated a pie chart to show their popularity on Twitter. 
+
+3. - Computed the number of tweets mentioning the two presidential candidates.
+
+4. Correlation Exploration:
+   - Interested in exploring the correlation between presidential candidates and policies such as "covid" and "China".
+   - Manually implemented the Chi-Square test to determine which presidential candidate is more correlated with which policy.
+
