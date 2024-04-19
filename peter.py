@@ -4,6 +4,8 @@ from pymongo.server_api import ServerApi
 from prettytable import PrettyTable
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 us_state_codes = {'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 
                   'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 
@@ -73,6 +75,30 @@ try:
     for index, row in summary.iterrows():
         table.add_row([index[0], index[1], round(row['likes'], 2), round(row['retweets'], 2), row['count']])
     print(table)
+    # Create a stacked bar chart for likes and retweets by state
+    state_engagement = df.groupby('state_code').agg({'likes': 'sum', 'retweets': 'sum'})
+    plt.figure(figsize=(15, 10))
+    state_engagement.plot(kind='bar', stacked=True)
+    plt.title('Total Engagement by State (Likes and Retweets)')
+    plt.xlabel('State Code')
+    plt.ylabel('Total Count')
+    plt.legend(title='Type of Engagement')
+    plt.show()
 
+    # Sentiment Distribution (Pie Graph)
+    sentiment_counts = df['sentiment_category'].value_counts()
+    plt.figure(figsize=(10, 8))
+    plt.pie(sentiment_counts, labels=sentiment_counts.index, autopct='%1.1f%%', startangle=140)
+    plt.title('Sentiment Distribution Across Tweets')
+    plt.show()
+
+    # Engagement vs Sentiment (Scatterplot)
+    plt.figure(figsize=(15, 10))
+    sns.scatterplot(data=df, x='sentiment_score', y='likes', hue='sentiment_category', style='sentiment_category', s=100)
+    plt.title('Engagement vs. Sentiment Score')
+    plt.xlabel('Sentiment Score')
+    plt.ylabel('Likes')
+    plt.grid(True)
+    plt.show()
 except Exception as e:
     print(f"An error occurred: {e}")
