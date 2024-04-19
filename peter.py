@@ -1,12 +1,11 @@
 import pandas as pd
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
-from prettytable import PrettyTable
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from prettytable import PrettyTable
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 us_state_codes = {'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 
                   'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 
                   'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 
@@ -14,18 +13,14 @@ us_state_codes = {'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
                   'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'}
 nltk.download('vader_lexicon')
 nltk.download('punkt')
-
 sia = SentimentIntensityAnalyzer()
-vader_lexicon = sia.lexicon
 
 def custom_sentiment_analysis(text):
-    # Tokenize the text
     words = nltk.word_tokenize(text.lower())
     sentiment_score = 0
-    # Calculate the sentiment score using the VADER lexicon
     for word in words:
-        if word in vader_lexicon:
-            sentiment_score += vader_lexicon[word]
+        if word in sia.lexicon:
+            sentiment_score += sia.lexicon[word]
     return sentiment_score
 
 uri = "mongodb+srv://plin11:2968peter@cluster0.jwnt1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -49,27 +44,27 @@ try:
 
     df = pd.DataFrame(data)
     print(f"Retrieved {len(df)} documents.")
+
     df['sentiment_score'] = df['tweet'].apply(custom_sentiment_analysis)
     df['sentiment_category'] = df['sentiment_score'].apply(
         lambda score: 'positive' if score > 0.1 else ('negative' if score < -0.1 else 'neutral')
     )
+
     summary = df.groupby(['state_code', 'sentiment_category']).agg({
         'likes': 'mean',
         'retweets': 'mean',
         'sentiment_score': 'count'
-    }).rename(columns={'sentiment_score': 'count'})
+    }).rename(columns={'sentiment_score': 'count'}).reset_index()
     table = PrettyTable()
     table.field_names = ["State Code", "Sentiment Category", "Average Likes", "Average Retweets", "Count"]
-    for index, row in summary.iterrows():
-        table.add_row([index[0], index[1], round(row['likes'], 2), round(row['retweets'], 2), row['count']])
+    for _, row in summary.iterrows():
+        table.add_row([row['state_code'], row['sentiment_category'], round(row['likes'], 2), round(row['retweets'], 2), row['count']])
     print(table)
+
     # bar chart for likes and retweets by state
     state_engagement = df.groupby('state_code').agg({'likes': 'sum', 'retweets': 'sum'})
     plt.figure(figsize=(15, 10))
     state_engagement.plot(kind='bar', stacked=True)
-    plt.title('Total Engagement by State (Likes and Retweets)')
-    plt.xlabel('State Code')
-    plt.ylabel('Total Count')
     plt.legend(title='Type of Engagement')
     plt.show()
 
