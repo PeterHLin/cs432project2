@@ -2,9 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-likes_df = pd.read_csv("users_likes.csv")
-retweets_df = pd.read_csv("users_retweets.csv")
-description_lengths_df = pd.read_csv("users_lengthdescr.csv")
+likes_df = pd.read_csv("all_users_likes.csv")
+retweets_df = pd.read_csv("all_users_retweets.csv")
+description_lengths_df = pd.read_csv("all_users_description_lengths.csv")
 
 
 merged_df = pd.merge(description_lengths_df, likes_df, left_index=True, right_index=True)
