@@ -1,12 +1,10 @@
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
 
-# Connect to the MongoDB server (assuming localhost and default MongoDB port 27017)
 client = MongoClient('mongodb+srv://plin11:2968peter@cluster0.jwnt1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client['test']  # Access the 'test' database
-collection = db['database']  # Access the 'database' collection
+db = client['test']
+collection = db['database']
 
-# Define the MongoDB aggregation pipeline
 pipeline = [
     {
         "$match": {
@@ -59,25 +57,25 @@ pipeline = [
     }
 ]
 
-# Execute the aggregation pipeline
+# Execute
 results = list(collection.aggregate(pipeline))
 
-# Check results and print to console
+# Check results
 if results and results[0]:
     counts = results[0]
     print(f"Number of Republican users: {counts.get('republican_count', 0)}")
     print(f"Number of Democratic users: {counts.get('democrat_count', 0)}")
 
-    # Data for plotting
+    # Data
     labels = ['Republican', 'Democratic']
     sizes = [counts.get('republican_count', 0), counts.get('democrat_count', 0)]
-    colors = ['#FF9999', '#9999FF']  # Colors for the pie chart
-    explode = (0.1, 0)  # "explode" the 1st slice (Republican)
+    colors = ['#FF9999', '#9999FF']
+    explode = (0.1, 0)  
 
-    # Plotting the pie chart
+    # Plot
     fig, ax = plt.subplots()
     ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=90)
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax.axis('equal')
     plt.title('Political Affiliation of Users')
     plt.show()
 
