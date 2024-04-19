@@ -1,4 +1,3 @@
-// Step 1: Calculate average description length, likes, and retweets per user
 var result = db.getSiblingDB("test").getCollection("database").aggregate([
   {
       $group: {
@@ -9,11 +8,11 @@ var result = db.getSiblingDB("test").getCollection("database").aggregate([
       }
   },
   {
-      $sort: { avg_description_length: -1 } // Sort by average description length in descending order
+      $sort: { avg_description_length: -1 } 
   }
 ]).toArray();
 
-// Step 2: Calculate correlation coefficient for likes
+
 var sumProductLikes = 0;
 var sumProductRetweets = 0;
 var sumDescriptionLengths = 0; // Define sumDescriptionLengths
@@ -28,7 +27,7 @@ result.forEach(function(doc) {
   sumDescriptionLengths += doc.avg_description_length;
   sumLikes += doc.avg_likes;
   sumRetweets += doc.avg_retweets;
-  sumSqrDescriptionLengths += Math.pow(doc.avg_description_length, 2); // Update sumSqrDescriptionLengths
+  sumSqrDescriptionLengths += Math.pow(doc.avg_description_length, 2); 
   sumSqrLikes += Math.pow(doc.avg_likes, 2);
   sumSqrRetweets += Math.pow(doc.avg_retweets, 2);
   sumProductLikes += doc.avg_description_length * doc.avg_likes;
@@ -43,6 +42,6 @@ var correlationRetweets = (n * sumProductRetweets - sumDescriptionLengths * sumR
                 (Math.sqrt(n * sumSqrDescriptionLengths - Math.pow(sumDescriptionLengths, 2)) *
                  Math.sqrt(n * sumSqrRetweets - Math.pow(sumRetweets, 2)));
 
-// Output the correlation coefficients
+// correlation coefficients
 print("Correlation coefficient for likes:", correlationLikes);
 print("Correlation coefficient for retweets:", correlationRetweets);
