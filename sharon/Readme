@@ -5,7 +5,7 @@ Here are the steps I did:
 
 2. Popularity Analysis:
    - Computed the number of tweets mentioning policy keywords.
-   - Generated a frequency histogram to show their popularity on Twitter. 
+   - Generated a pie chart to show their popularity on Twitter. 
 
 3. - Computed the number of tweets mentioning the two presidential candidates.
 
